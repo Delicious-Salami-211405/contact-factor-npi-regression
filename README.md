@@ -10,7 +10,7 @@ This repository includes code for the project titled "The effect of non-pharmace
 
 **Results:** Permutation tests for NPIs suggest strong evidence for rejection of the null hypothesis of no association. Conversely, there was no evidence to reject the null for the temperature covariate. These results were robust to changes in the assumed incubation period used to calculate Re from smoothed incidence.
 
-**Discussion:** NPIs have a negative association with effective reproductive number, conversely increasing temperature for the chosen study period displayed no association with a reduction in the contact factor. These results are consistent with other studies looking at the effect of NPIs. The framework used in this study could be applied to the lagged effects of specific NPIs given higher resolution data.
+**Discussion:** NPIs displayed a negative association with the estimated contact factor, conversely increasing temperature for the chosen study period displayed no association with the estimated contact factor. These results are broadly consistent with other studies looking at the effects of NPIs and temperature. The framework used in this study could be applied to study the effects of specific NPIs given higher resolution and continuous data proxies for individual NPI policies.
 
 ## Code Context & Usage
 
