@@ -2,7 +2,7 @@
 
 import hashlib
 
-filename = '[211405] The effect of non-pharmaceutical interventions on COVID-19 contact factors vF2.docx'
+filename = '[211405] The effect of non-pharmaceutical interventions on COVID-19 contact factors vF3.docx'
 with open(filename, 'rb') as f:
 	h = hashlib.sha256(f.read()).hexdigest()
 
