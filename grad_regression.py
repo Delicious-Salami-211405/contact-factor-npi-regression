@@ -15,11 +15,15 @@ n_countries = 30
 n_curves = 30
 study_period = 60
 
-X_unrolled_S = 0.5 * np.ones((60, 30))
-X_unrolled_T = 0.25 * np.ones((60, 30))
+X_unrolled_S = np.ones((study_period, n_countries))
+X_unrolled_T = np.ones((study_period, n_countries))
+
+for i in range(study_period):
+	X_unrolled_S[:, i] = X_unrolled_S[:, i] * np.random.random()
+	X_unrolled_T[:, i] = X_unrolled_T[:, i] * np.random.random()
 
 # Response
-C_factor = 0.7 * torch.ones((30, 60))
+C_factor = 0.8 * torch.ones((30, 60))
 
 # Make covariates into stacked tensors
 # Reshape input data into 3D tensors
@@ -82,8 +86,8 @@ l1_loss = loss + l1_lambda * sum([param.abs().sum() for param in fn_model_string
 # Check L1 loss calc #
 ######################
 
-J = 1/(30*60) * torch.norm(Y_pred - C_factor, p='fro') ** 2 + l1_lambda * sum([param.abs().sum() for param in fn_model_stringency_vec.parameters()])
-print(l1_loss - J)
+L = 1/(n_countries * study_period) * torch.norm(Y_pred - C_factor, p='fro') ** 2 + l1_lambda * sum([param.abs().sum() for param in fn_model_stringency_vec.parameters()])
+print(l1_loss - L)
 # Check OK
 
 ####################################
@@ -100,8 +104,8 @@ W_S_grad = fn_model_stringency_vec.w_1.grad.detach()
 W_S_vec = fn_model_stringency_vec.w_1.detach()
 
 # Manual check for W_S grad
-ones_left = torch.ones((1, 30))
-ones_right = torch.ones((60, 1))
+ones_left = torch.ones((1, n_countries))
+ones_right = torch.ones((study_period, 1))
 
 # S_tensor
 s_tensor_list = []
@@ -117,9 +121,9 @@ for i in range(study_period):
 s_tensor_3D = torch.stack(s_tensor_list)
 
 # L1 penalised grad
-dJ_dWS = torch.matmul(ones_left, -2/(30*60) * (C_factor - Y_pred) * s_tensor_3D)
-dJ_dWS = torch.matmul(dJ_dWS, ones_right)
-dJ_dWS = torch.squeeze(dJ_dWS, dim=2) + l1_lambda * torch.sign(W_S_vec)
+dL_dWS = torch.matmul(ones_left, -2/(n_countries * study_period) * (C_factor - Y_pred) * s_tensor_3D)
+dL_dWS = torch.matmul(dL_dWS, ones_right)
+dL_dWS = torch.squeeze(dL_dWS, dim=2) + l1_lambda * torch.sign(W_S_vec)
 
-print(dJ_dWS - W_S_grad)
+print(dL_dWS - W_S_grad)
 # Check OK

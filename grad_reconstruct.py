@@ -43,10 +43,10 @@ loss = loss_fn(Y_pred, Y_dat)
 # Check loss function calc #
 ############################
 
-J = 1/(30*60) * torch.norm(Y_pred - Y_dat, p='fro') ** 2
+L = 1/(n_countries * study_period) * torch.norm(Y_pred - Y_dat, p='fro') ** 2
 
 # Check equivalency
-print(J-loss)
+print(L - loss)
 # Check OK
 
 ###################
@@ -62,12 +62,13 @@ w1_grad = fn_model_ft.w_1.grad.detach()
 b0_grad = fn_model_ft.b0.grad.detach()
 
 # Manual computation of vectorised gradients
-dJ_dw = -2/(30*60) * (Y_dat - Y_pred)
-print(dJ_dw - w1_grad)
+dL_dw = -2/(n_countries * study_period) * (Y_dat - Y_pred)
+print(dL_dw - w1_grad)
 # OK - manual gradients are correct
 
 # Manual grad check - b0
 ones_right = torch.ones((60, 1))
-dJ_db0 = -2/(30*60) * torch.matmul((Y_dat - Y_pred), ones_right)
-print(dJ_db0 - b0_grad)
+dL_db0 = -2/(n_countries * study_period) * torch.matmul((Y_dat - Y_pred), ones_right)
+print(dL_db0 - b0_grad)
 # OK - manual gradients are correct
+
