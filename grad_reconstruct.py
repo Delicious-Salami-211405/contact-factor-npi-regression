@@ -17,7 +17,6 @@ Y_dat = torch.ones((30, 60))
 # Input dims
 study_period = 60
 n_countries = 30
-# 1 r(0) estimate for each country
 weight_dim = [[n_countries, study_period], [n_countries, 1]]
 
 # Use Glorot normal initialisation
@@ -61,7 +60,7 @@ loss.backward()
 w1_grad = fn_model_ft.w_1.grad.detach()
 b0_grad = fn_model_ft.b0.grad.detach()
 
-# Manual computation of vectorised gradients
+# Computation of vectorised gradients
 dL_dw = -2/(n_countries * study_period) * (Y_dat - Y_pred)
 print(dL_dw - w1_grad)
 # OK - manual gradients are correct
@@ -70,5 +69,5 @@ print(dL_dw - w1_grad)
 ones_right = torch.ones((60, 1))
 dL_db0 = -2/(n_countries * study_period) * torch.matmul((Y_dat - Y_pred), ones_right)
 print(dL_db0 - b0_grad)
-# OK - manual gradients are correct
+# OK - gradients are correct
 

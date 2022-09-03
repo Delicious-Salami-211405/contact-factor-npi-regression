@@ -94,7 +94,7 @@ print(l1_loss - L)
 # Check vectorised gradient update #
 ####################################
 
-# Manual grad check without lambda
+# Grad check with lambda
 optimizer.zero_grad()
 l1_loss.backward()
 
@@ -103,7 +103,7 @@ W_S_grad = fn_model_stringency_vec.w_1.grad.detach()
 # Get W_S vector
 W_S_vec = fn_model_stringency_vec.w_1.detach()
 
-# Manual check for W_S grad
+# Check for vectorised W_S grad
 ones_left = torch.ones((1, n_countries))
 ones_right = torch.ones((study_period, 1))
 
